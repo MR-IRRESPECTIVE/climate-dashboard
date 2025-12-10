@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Sight Intelligence</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-leaf"></i> <span>Eco-Sight</span>
+            </div>
+            
+            <nav class="menu">
+                <button class="menu-btn active" data-target="home-view">
+                    <i class="fa-solid fa-house"></i> <span>Home</span>
+                </button>
+                <button class="menu-btn" data-target="atmosphere-view">
+                    <i class="fa-solid fa-cloud-bolt"></i> <span>Atmosphere</span>
+                </button>
+                <button class="menu-btn" data-target="pollution-view">
+                    <i class="fa-solid fa-smog"></i> <span>Pollution</span>
+                </button>
+                <button class="menu-btn" data-target="footprint-view">
+                    <i class="fa-solid fa-shoe-prints"></i> <span>Footprint</span>
+                </button>
+            </nav>
+
+            <div class="location-badge" id="location-display">
+                <i class="fa-solid fa-location-dot"></i> Detecting...
+            </div>
+        </aside>
+
+        <main class="content-area">
+            
+            <section id="home-view" class="view-section active">
+                <div class="hero-banner glass-card">
+                    <h1>Climate Awareness Initiative</h1>
+                    <p>"Bridging the gap between data and daily action."</p>
+                </div>
+
+                <div class="mission-grid">
+                    <div class="glass-card">
+                        <h3><i class="fa-solid fa-bullseye"></i> Our Mission</h3>
+                        <p>To provide real-time, localized climate data that empowers individuals to reduce their ecological footprint.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3><i class="fa-solid fa-chart-line"></i> Why It Matters</h3>
+                        <p>Air quality and carbon emissions are invisible threats. We make them visible through data visualization.</p>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Meet The Team</h2>
+                <div class="team-grid">
+                    <div class="glass-card team-card">
+                        <img src="rohan.jpeg" alt="Rohan" class="team-photo">
+                        <h3>Rohan Chakraborty</h3>
+                        <p>241013006042</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="sammo.jpeg" alt="sammo" class="team-photo">
+                        <h3>Sammomoy Das</h3>
+                        <p>241013006013</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="sankalan.jpeg" alt="sankalan" class="team-photo">
+                        <h3>Sankalan Sil</h3>
+                        <p>241013006010</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="aritra.jpeg" alt="aritra" class="team-photo">
+                        <h3>Aritra Mondal</h3>
+                        <p>241013006006</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="rohanm.jpeg" alt="Rohan Mandal" class="team-photo">
+                        <h3>Rohan Mandal</h3>
+                        <p>241013006002</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="himanish.jpeg" alt="himanish" class="team-photo">
+                        <h3>Himanish Bannerjee</h3>
+                        <p>241013006051</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="taanish.jpeg" alt="taanish" class="team-photo">
+                        <h3>Taanish Lahiri</h3>
+                        <p>D241013006048</p>
+                    </div>
+                    <div class="glass-card team-card">
+                        <img src="agnibha.jpeg" alt="agnibha" class="team-photo">
+                        <h3>Agnibha Sarkar</h3>
+                        <p>241013006052</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="atmosphere-view" class="view-section hidden">
+                <div class="top-bar">
+                    <h2>Atmosphere Hub</h2>
+                    <div class="search-box">
+                        <input type="text" id="cityInput" placeholder="Check another city...">
+                        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="glass-card metric-card">
+                        <div class="icon"><i class="fa-solid fa-temperature-half"></i></div>
+                        <div class="info">
+                            <span class="label">Temperature</span>
+                            <span class="value" id="temp-val">--°C</span>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="icon"><i class="fa-solid fa-droplet"></i></div>
+                        <div class="info">
+                            <span class="label">Humidity</span>
+                            <span class="value" id="humid-val">--%</span>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="icon"><i class="fa-solid fa-wind"></i></div>
+                        <div class="info">
+                            <span class="label">Wind Speed</span>
+                            <span class="value" id="wind-val">-- km/h</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card chart-card wide">
+                        <h3>7-Day Rainfall Prediction</h3>
+                        <div class="chart-box">
+                            <canvas id="rainfallChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pollution-view" class="view-section hidden">
+                <h2>Pollution & Sequestration</h2>
+                
+                <div class="dashboard-grid">
+                    <div class="glass-card chart-card">
+                        <h3>Air Quality Analysis</h3>
+                        <div class="chart-box">
+                            <canvas id="airQualityRadar"></canvas>
+                        </div>
+                        <div class="mini-stats">
+                            <div><strong>PM 2.5:</strong> <span id="pm25-val">--</span></div>
+                            <div><strong>NO2:</strong> <span id="no2-val">--</span></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card calculator-card">
+                        <h3><i class="fa-solid fa-tree"></i> Sequestration Calc</h3>
+                        
+                        <div class="input-group">
+                            <label>Trees Planted: <span id="tree-count">0</span></label>
+                            <input type="range" id="treeInput" min="0" max="1000" value="0">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Soil Area (sq ft): <span id="soil-count">0</span></label>
+                            <input type="range" id="soilInput" min="0" max="5000" value="0">
+                        </div>
+
+                        <div class="result-box">
+                            <span class="big-number" id="sequestrationResult">0.00</span>
+                            <span class="unit">Tonnes CO2 / Year</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="footprint-view" class="view-section hidden">
+                <h2>Pollution Footprint Calculator</h2>
+                
+                <div class="glass-card survey-card wide">
+                    <p class="subtitle">Answer these questions to analyze your impact.</p>
+                    
+                    <div class="poll-grid">
+                        <div class="question-block">
+                            <label>1. Primary Transport Mode</label>
+                            <div class="options-container" id="q1-options">
+                                <button class="option-btn" data-score="40" data-tip="Switching to public transport saves ~1.5 tonnes CO2/year.">Car/Bike</button>
+                                <button class="option-btn" data-score="15" data-tip="Try cycling for short trips.">Bus/Metro</button>
+                                <button class="option-btn" data-score="0">Cycle/Walk</button>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <label>2. Daily AC Usage</label>
+                            <div class="options-container" id="q2-options">
+                                <button class="option-btn" data-score="0">No AC</button>
+                                <button class="option-btn" data-score="15" data-tip="Set AC to 24°C+ to save energy.">Low</button>
+                                <button class="option-btn" data-score="30" data-tip="Use 'Eco Mode' to reduce impact.">High</button>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <label>3. Plastic Usage</label>
+                            <div class="options-container" id="q3-options">
+                                <button class="option-btn" data-score="0">Never</button>
+                                <button class="option-btn" data-score="10" data-tip="Always carry a reusable bag.">Sometimes</button>
+                                <button class="option-btn" data-score="20" data-tip="Switch to a metal water bottle.">Daily</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="calculate-footprint-btn" class="action-btn">Analyze My Footprint</button>
+                    
+                    <div id="footprint-result" class="result-display hidden">
+                        <span class="label">Your Pollution Score:</span>
+                        <strong class="big-number" id="impact-score">--</strong>
+                        <p id="impact-message">--</p>
+                        <ul id="tips-list"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="app-footer">
+                <p>Data Sources:</p>
+                <div style="margin-bottom: 10px;">
+                    <span class="source-badge"><i class="fa-solid fa-cloud"></i> Open-Meteo API</span>
+                    <span class="source-badge"><i class="fa-solid fa-flask"></i> NASA Clean Air Study</span>
+                    <span class="source-badge"><i class="fa-solid fa-leaf"></i> IPCC Carbon Guidelines</span>
+                </div>
+                <p class="credits">
+                    Developed for Semester Project 2025 | &copy; Eco-Sight Intelligence Team
+                </p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
