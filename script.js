@@ -59,12 +59,13 @@ async function getCoordinates(city) {
 }
 
 function updateDashboard(lat, lon, label) {
-    document.getElementById('location-display').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${label}`;
+    const locDisplay = document.getElementById('location-display');
+    if(locDisplay) locDisplay.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${label}`;
     fetchWeather(lat, lon);
     fetchAirQuality(lat, lon);
 }
 
-// --- 3. API FETCHING WITH LOADING STATES ---
+// --- 3. API FETCHING WITH PREDICTIONS ---
 async function fetchWeather(lat, lon) {
     const tempEl = document.getElementById('temp-val');
     const humEl = document.getElementById('humid-val');
@@ -76,14 +77,20 @@ async function fetchWeather(lat, lon) {
     windEl.innerHTML = '<div class="spinner"></div>';
 
     try {
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=precipitation_probability_mean&timezone=auto`);
+        // Fetching Prediction Models (Rain & Temp Max/Min)
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=precipitation_probability_mean,temperature_2m_max,temperature_2m_min&timezone=auto`;
+        const res = await fetch(url);
         const data = await res.json();
 
+        // Update Text
         tempEl.innerText = `${data.current_weather.temperature}°C`;
         windEl.innerText = `${data.current_weather.windspeed} km/h`;
         humEl.innerText = "76%"; // Mock data for demo
 
+        // Render BOTH Charts
         renderRainChart(data.daily.precipitation_probability_mean, data.daily.time);
+        renderTempChart(data.daily.temperature_2m_max, data.daily.temperature_2m_min, data.daily.time);
+
     } catch (err) { 
         console.error(err);
         tempEl.innerText = "--";
@@ -111,13 +118,16 @@ async function fetchAirQuality(lat, lon) {
     }
 }
 
-// --- 4. PREMIUM CHART RENDERERS ---
+// --- 4. ADVANCED CHART RENDERERS ---
+
 let rainChart = null;
+let tempChart = null;
+let airChart = null;
+
 function renderRainChart(dataPoints, labels) {
     const ctx = document.getElementById('rainfallChart').getContext('2d');
     const shortLabels = labels.map(d => new Date(d).toLocaleDateString('en-US', {weekday: 'short'}));
 
-    // Gradient Fill
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(0, 137, 123, 0.5)'); 
     gradient.addColorStop(1, 'rgba(0, 137, 123, 0.0)'); 
@@ -141,14 +151,51 @@ function renderRainChart(dataPoints, labels) {
             responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: '#f0f0f0', borderDash: [5, 5] }, ticks: { color: '#888' } },
+                y: { grid: { color: '#f0f0f0', borderDash: [5, 5] }, ticks: { color: '#888' }, min: 0, max: 100 },
                 x: { grid: { display: false }, ticks: { color: '#888' } }
             }
         }
     });
 }
 
-let airChart = null;
+function renderTempChart(maxTemp, minTemp, labels) {
+    const ctx = document.getElementById('tempChart').getContext('2d');
+    const shortLabels = labels.map(d => new Date(d).toLocaleDateString('en-US', {weekday: 'short'}));
+
+    if (tempChart) tempChart.destroy();
+
+    tempChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: shortLabels,
+            datasets: [
+                {
+                    label: 'Max Temp (°C)',
+                    data: maxTemp,
+                    borderColor: '#ff7043', 
+                    backgroundColor: 'rgba(255, 112, 67, 0.1)',
+                    borderWidth: 3, tension: 0.4
+                },
+                {
+                    label: 'Min Temp (°C)',
+                    data: minTemp,
+                    borderColor: '#42a5f5',
+                    backgroundColor: 'transparent',
+                    borderWidth: 3, borderDash: [5, 5], tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false } },
+            scales: {
+                y: { grid: { color: '#f0f0f0' }, ticks: { color: '#888' } },
+                x: { grid: { display: false }, ticks: { color: '#888' } }
+            }
+        }
+    });
+}
+
 function renderAirChart(data) {
     const ctx = document.getElementById('airQualityRadar').getContext('2d');
     if (airChart) airChart.destroy();
